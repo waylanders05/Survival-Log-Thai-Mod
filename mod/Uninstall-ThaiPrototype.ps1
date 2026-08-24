@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [string]$GameDir = ''
 )
@@ -17,7 +17,7 @@ if ([string]::IsNullOrWhiteSpace($GameDir)) {
         $vdf=Join-Path $root 'steamapps\libraryfolders.vdf'
         if (Test-Path -LiteralPath $vdf -PathType Leaf) { foreach ($m in [regex]::Matches([IO.File]::ReadAllText($vdf),'"path"\s+"([^"]+)"')) { & $add ($m.Groups[1].Value -replace '\\\\','\') } }
     }
-    foreach ($root in $roots) { $candidate=Join-Path $root 'steamapps\common\Survival Log'; if (Test-Path -LiteralPath (Join-Path $candidate 'SurvivalLog.exe') -PathType Leaf) { $GameDir=$candidate; break } }
+    foreach ($root in $roots) { $candidate=Join-Path $root 'steamapps\common\Survival Log'; if (Test-Path -LiteralPath (Join-Path $candidate 'SurvivalLog_Data\StreamingAssets\PackageManifest\MainPackage') -PathType Container) { $GameDir=$candidate; break } }
 }
 if ([string]::IsNullOrWhiteSpace($GameDir)) { throw 'ไม่พบโฟลเดอร์เกม Survival Log' }
 $webDir = Join-Path $GameDir 'SurvivalLog_Data\StreamingAssets\WebUI\UI\MainUI'

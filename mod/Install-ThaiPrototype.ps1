@@ -1,14 +1,19 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [string]$GameDir = ''
 )
 
 $ErrorActionPreference = 'Stop'
 
+function Get-RelativePathCompat([string]$basePath, [string]$targetPath) {
+    $baseUri = New-Object System.Uri(($basePath.TrimEnd('\') + '\'))
+    $targetUri = New-Object System.Uri($targetPath)
+    return [System.Uri]::UnescapeDataString($baseUri.MakeRelativeUri($targetUri).ToString()).Replace('/','\')
+}
+
 function Test-SurvivalLogDir([string]$path) {
     if ([string]::IsNullOrWhiteSpace($path)) { return $false }
-    return (Test-Path -LiteralPath (Join-Path $path 'SurvivalLog.exe') -PathType Leaf) -and
-           (Test-Path -LiteralPath (Join-Path $path 'SurvivalLog_Data\StreamingAssets\PackageManifest\MainPackage') -PathType Container)
+    return Test-Path -LiteralPath (Join-Path $path 'SurvivalLog_Data\StreamingAssets\PackageManifest\MainPackage') -PathType Container
 }
 
 function Find-SurvivalLogDir {
@@ -54,7 +59,6 @@ if (-not (Test-SurvivalLogDir $GameDir)) {
     Add-Type -AssemblyName System.Windows.Forms
     $dialog = New-Object System.Windows.Forms.FolderBrowserDialog
     $dialog.Description = 'เลือกโฟลเดอร์เกม Survival Log'
-    $dialog.UseDescriptionForTitle = $true
     if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK -and (Test-SurvivalLogDir $dialog.SelectedPath)) {
         $GameDir = $dialog.SelectedPath
     } else {
@@ -118,10 +122,10 @@ foreach ($page in $routePages) {
     $pagePath = $page.FullName
     $pageResolved = [System.IO.Path]::GetFullPath($pagePath)
     if (-not $pageResolved.StartsWith($webRootResolved, [System.StringComparison]::OrdinalIgnoreCase)) { throw "Page escaped WebUI root: $pageResolved" }
-    $relativePage = [System.IO.Path]::GetRelativePath($webRootResolved, $pageResolved)
+    $relativePage = Get-RelativePathCompat $webRootResolved $pageResolved
     $pageBackup = "$pagePath.thai-prototype.backup"
     $pageHtml = [System.IO.File]::ReadAllText($pagePath)
-    $relativeJs = [System.IO.Path]::GetRelativePath($page.DirectoryName, $sharedTargetJs).Replace('\','/')
+    $relativeJs = (Get-RelativePathCompat $page.DirectoryName $sharedTargetJs).Replace('\','/')
     $sharedTag = "<script src=`"$relativeJs`"></script>"
     if ($pageHtml -notmatch [regex]::Escape($sharedTag)) {
         $coreMatch = [regex]::Match($pageHtml, '<script src="[^"]*webui-core\.js"></script>')
