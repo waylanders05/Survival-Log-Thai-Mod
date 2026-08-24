@@ -1,6 +1,8 @@
 # Survival Log — Thai fan translation
 
-แพ็กเกจนี้รองรับเกม Survival Log เวอร์ชัน 1.0.14911
+แพ็กเกจนี้รองรับเกม Survival Log เวอร์ชัน 1.0.14956
+
+ดาวน์โหลดรุ่นล่าสุด: [Survival_Log_Thai_1.0.14956.zip](https://github.com/waylanders05/Survival-Log-Thai-Mod/releases/download/v1.0.14956/Survival_Log_Thai_1.0.14956.zip)
 
 รุ่นแก้ไขตัวติดตั้งนี้รองรับ Windows PowerShell 5.1 และเครื่องที่ใช้ไดรฟ์ Steam แบบกำหนดเอง
 
