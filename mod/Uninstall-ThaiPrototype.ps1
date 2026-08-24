@@ -44,12 +44,18 @@ try {
     $htmlPath = Join-Path $mainUiDir 'MainUI.html'
     $statePath = Join-Path $webRoot '.survival-log-thai-install.json'
     $configDir = Join-Path $GameDir 'SurvivalLog_Data\StreamingAssets\PackageManifest\MainPackage'
+    $configBundleNameFile = Join-Path $PSScriptRoot 'config-bundle-name.txt'
     $configBundlePatch = Join-Path $PSScriptRoot 'config-thai-encrypted.bundle'
     $sourceJs = Join-Path $PSScriptRoot 'survival-log-thai-prototype.js'
     $sharedSourceJs = Join-Path $PSScriptRoot 'survival-log-thai-webui.js'
     $mainJsTarget = Join-Path $mainUiDir 'survival-log-thai-prototype.js'
     $sharedTargetJs = Join-Path $webRoot 'survival-log-thai-webui.js'
     $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    $expectedConfigBundleName = $null
+    if (Test-Path -LiteralPath $configBundleNameFile -PathType Leaf) {
+        $expectedConfigBundleName = [System.IO.File]::ReadAllText($configBundleNameFile).Trim()
+        if ($expectedConfigBundleName -notmatch '^[0-9a-f]{32}\.bundle$') { $expectedConfigBundleName = $null }
+    }
 
     $script:state = $null
     $script:statePages = @{}
@@ -100,8 +106,9 @@ try {
             if ($backupHasMarker) {
                 Add-LocalWarning "backup ไม่ใช่ไฟล์ต้นฉบับ จึงไม่ใช้คืนค่า: $backupPath"
             } elseif (-not $targetExists) {
-                Write-AtomicBytes $resolved $backupBytes
-                Remove-Item -LiteralPath $backupPath -Force
+                # A page removed by a Steam update must not be resurrected from
+                # an older mod backup. Keep the backup for manual recovery.
+                Add-LocalWarning "พบ backup ของหน้า WebUI ที่ไม่มีในเกมปัจจุบัน จึงไม่คืนค่า: $backupPath"
             } elseif ($hasMod -and ($knownPatched -or -not $statePage)) {
                 Write-AtomicBytes $resolved $backupBytes
                 Remove-Item -LiteralPath $backupPath -Force
@@ -164,6 +171,13 @@ try {
             $knownPatched = $false
             if ($patchHash -and $targetHash -eq $patchHash) { $knownPatched = $true }
             if ($stateConfig -and $stateConfig.patchedHash -and $targetHash -eq [string]$stateConfig.patchedHash) { $knownPatched = $true }
+            $isCurrentPackageBundle = $expectedConfigBundleName -and ([System.IO.Path]::GetFileName($target) -eq $expectedConfigBundleName)
+            if (-not $targetExists -and -not $isCurrentPackageBundle -and -not $stateConfig) {
+                # An orphan backup from an older game/package version must not be
+                # reintroduced after Steam has replaced or removed that bundle.
+                Add-LocalWarning "พบ config backup ของไฟล์เก่าที่ไม่มีในเกมปัจจุบัน จึงไม่คืนค่า: $($backup.FullName)"
+                continue
+            }
             if (-not $targetExists -or $knownPatched) {
                 Write-AtomicBytes $target ([System.IO.File]::ReadAllBytes($backup.FullName))
                 Remove-Item -LiteralPath $backup.FullName -Force
