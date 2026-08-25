@@ -1,8 +1,8 @@
 # Survival Log — Thai fan translation
 
-แพ็กเกจนี้รองรับเกม Survival Log เวอร์ชัน 1.0.14956
+แพ็กเกจนี้รองรับเกม Survival Log เวอร์ชัน 1.0.15029
 
-ดาวน์โหลดรุ่นล่าสุด: [Survival_Log_Thai_1.0.14956.zip](https://github.com/waylanders05/Survival-Log-Thai-Mod/releases/download/v1.0.14956/Survival_Log_Thai_1.0.14956.zip)
+ดาวน์โหลดรุ่นล่าสุด: [Survival_Log_Thai_1.0.15029.zip](https://github.com/waylanders05/Survival-Log-Thai-Mod/releases/download/v1.0.15029/Survival_Log_Thai_1.0.15029.zip)
 
 รุ่นแก้ไขตัวติดตั้งนี้รองรับ Windows PowerShell 5.1 และเครื่องที่ใช้ไดรฟ์ Steam แบบกำหนดเอง
 
@@ -31,6 +31,19 @@ Set-ExecutionPolicy -Scope Process Bypass
 ```
 
 จากนั้นเปิดเกมใหม่ เลือกช่องภาษาอังกฤษที่แสดงเป็น `ไทย (ต้นแบบ)`
+
+## ติดตั้งแบบ Manual (Copy ไฟล์)
+
+ใน ZIP มีโฟลเดอร์ `Manual` สำหรับเกมเวอร์ชัน 1.0.15029 โดยเตรียมโครงสร้างไฟล์ให้ตรงกับโฟลเดอร์เกมแล้ว
+
+1. ปิดเกมและ Steam ให้เรียบร้อย
+2. สำรองโฟลเดอร์เกม หรือใช้ Steam Verify Files หากต้องการย้อนกลับเป็นไฟล์เดิม
+3. เปิดโฟลเดอร์ `Manual`
+4. คัดลอกโฟลเดอร์ `SurvivalLog_Data` ไปวางทับในโฟลเดอร์หลักของเกม `Survival Log`
+5. เลือก **Replace/แทนที่ไฟล์** เมื่อ Windows ถาม
+6. เปิดเกมใหม่ แล้วเลือกช่องภาษาอังกฤษที่แสดงเป็น `ไทย (ต้นแบบ)`
+
+วิธี Manual นี้เป็นไฟล์ที่เตรียมตามโครงสร้างเกมรุ่น 1.0.15029 เท่านั้น หากเกมอัปเดตอีกครั้งควรใช้ ZIP รุ่นใหม่ และไม่ควรนำไฟล์จากโฟลเดอร์ `Manual` ไปใช้กับเกมคนละเวอร์ชัน
 
 ## ถอนการติดตั้ง
 
