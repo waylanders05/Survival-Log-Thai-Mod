@@ -1,8 +1,12 @@
 # Survival Log — Thai fan translation
 
+![ภาพประกาศมอดภาษาไทย Survival Log รุ่น 1.1.18237](images/Survival_Log_Thai_v1.1.18237_announcement.png)
+
 แพ็กเกจนี้รองรับเกม Survival Log เวอร์ชัน 1.1.18237
 
 ดาวน์โหลดรุ่นล่าสุด: [Survival_Log_Thai_1.1.18237.zip](https://github.com/waylanders05/Survival-Log-Thai-Mod/releases/download/v1.1.18237/Survival_Log_Thai_1.1.18237.zip)
+
+เกมรุ่นนี้เพิ่มมินิแมปแยกชั้นใน Tech Company และปุ่ม `H` สำหรับซ่อนหน้าจอ พร้อมปรับระบบ Camp และการโต้ตอบกับผู้รอดชีวิต อ่าน[ประกาศอัปเดตเกม 30 กันยายน](https://steamcommunity.com/games/4164790/announcements/detail/1845383656376845)
 
 รุ่นแก้ไขตัวติดตั้งนี้รองรับ Windows PowerShell 5.1 และเครื่องที่ใช้ไดรฟ์ Steam แบบกำหนดเอง
 
